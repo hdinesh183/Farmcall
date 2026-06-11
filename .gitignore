@@ -1,0 +1,7 @@
+.env
+__pycache__/
+audio_files/
+ngrok.exe
+ngrok
+*.json
+test_*.py
