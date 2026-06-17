@@ -12,7 +12,7 @@ from scheduler import start_scheduler, run_daily_alert_pipeline
 from weather_service import fetch_weekly_forecast, process_weekly_data, store_weekly_forecast
 from voice_service import generate_voice_file
 from call_service import make_twilio_call
-from config import NGROK_URL
+from config import NGROK_URL, ADMIN_USERNAME, ADMIN_PASSWORD
 from models import Village, Farmer, Advisory, WeatherData, AdvisoryCall
 from database import SessionLocal, engine, Base
 from sqlalchemy import text, func
@@ -84,8 +84,8 @@ import secrets
 security = HTTPBasic()
 
 def admin_auth(credentials: HTTPBasicCredentials = Depends(security)):
-    correct_username = secrets.compare_digest(credentials.username, "admin")
-    correct_password = secrets.compare_digest(credentials.password, os.getenv("ADMIN_PASSWORD", "farmcall2025"))
+    correct_username = secrets.compare_digest(credentials.username, ADMIN_USERNAME)
+    correct_password = secrets.compare_digest(credentials.password, ADMIN_PASSWORD)
     if not (correct_username and correct_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
